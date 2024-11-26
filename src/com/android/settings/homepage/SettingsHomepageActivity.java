@@ -161,10 +161,8 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         if (mAllowUpdateSuggestion) {
             Log.i(TAG, "showHomepageWithSuggestion: " + showSuggestion);
             mAllowUpdateSuggestion = false;
-            if (Flags.homepageRevamp()) {
-                mSuggestionView.setVisibility(showSuggestion ? View.VISIBLE : View.GONE);
-            } else {
-                mSuggestionView.setVisibility(showSuggestion ? View.VISIBLE : View.GONE);
+            mSuggestionView.setVisibility(showSuggestion ? View.VISIBLE : View.GONE);
+            if (!revamped()) {
                 mTwoPaneSuggestionView.setVisibility(showSuggestion ? View.VISIBLE : View.GONE);
             }
         }
@@ -251,8 +249,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
 
         setupEdgeToEdge();
         setContentView(
-                Flags.homepageRevamp()
-                        ? R.layout.settings_homepage_container_v2
+                revamped() ? R.layout.settings_homepage_container_v2
                         : R.layout.settings_homepage_container);
 
         mIsTwoPane = ActivityEmbeddingUtils.isAlreadyEmbedded(this);
@@ -406,7 +403,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     }
 
     private void initSearchBarView() {
-        if (Flags.homepageRevamp()) {
+        if (revamped()) {
             View toolbar = findViewById(R.id.search_action_bar);
             FeatureFactory.getFeatureFactory().getSearchFeatureProvider()
                     .initSearchToolbar(this /* activity */, toolbar,
@@ -427,7 +424,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     }
 
     private void initAvatarView() {
-        if (Flags.homepageRevamp()) {
+        if (revamped()) {
             return;
         }
 
@@ -456,7 +453,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     }
 
     private void updateHomepageBackground() {
-        if (!Flags.homepageRevamp() && !mIsEmbeddingActivityEnabled) {
+        if (!revamped() && !mIsEmbeddingActivityEnabled) {
             return;
         }
 
@@ -470,7 +467,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         window.setStatusBarColor(color);
         // Update content background.
         findViewById(android.R.id.content).setBackgroundColor(color);
-        if (Flags.homepageRevamp()) {
+        if (revamped()) {
             //Update search bar background
             findViewById(R.id.app_bar_container).setBackgroundColor(color);
         }
@@ -483,10 +480,8 @@ public class SettingsHomepageActivity extends FragmentActivity implements
             return;
         }
 
-        if (Flags.homepageRevamp()) {
-            mSuggestionView = findViewById(R.id.suggestion_content);
-        } else {
-            mSuggestionView = findViewById(R.id.suggestion_content);
+        mSuggestionView = findViewById(R.id.suggestion_content);
+        if (!revamped()) {
             mTwoPaneSuggestionView = findViewById(R.id.two_pane_suggestion_content);
         }
         mHomepageView = findViewById(R.id.settings_homepage_container);
@@ -496,7 +491,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         // Schedule a timer to show the homepage and hide the suggestion on timeout.
         mHomepageView.postDelayed(() -> showHomepageWithSuggestion(false),
                 HOMEPAGE_LOADING_TIMEOUT_MS);
-        if (Flags.homepageRevamp()) {
+        if (revamped()) {
             showFragment(new SuggestionFragCreator(fragmentClass, true),
                     R.id.suggestion_content);
         } else {
@@ -769,8 +764,12 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         view.requestFocus();
     }
 
+    private boolean revamped() {
+      return com.android.settings.Utils.revamped(getApplicationContext());
+    }
+
     private void updateHomepageAppBar() {
-        if (Flags.homepageRevamp() || !mIsEmbeddingActivityEnabled) {
+        if (revamped() || !mIsEmbeddingActivityEnabled) {
             return;
         }
         updateAppBarMinHeight();
@@ -786,7 +785,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     }
 
     private void updateHomepagePaddings() {
-        if (Flags.homepageRevamp() || !mIsEmbeddingActivityEnabled) {
+        if (revamped()) {
             return;
         }
         if (mIsTwoPane) {
@@ -800,7 +799,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     }
 
     private void updateAppBarMinHeight() {
-        if (Flags.homepageRevamp()) {
+        if (revamped()) {
             return;
         }
         final int searchBarHeight = getResources().getDimensionPixelSize(R.dimen.search_bar_height);

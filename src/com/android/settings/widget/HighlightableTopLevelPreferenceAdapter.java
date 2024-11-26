@@ -68,6 +68,7 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
     private boolean mHighlightNeeded;
     private boolean mScrolled;
     private SparseArray<PreferenceViewHolder> mViewHolders;
+    private boolean mRevamped;
 
     public HighlightableTopLevelPreferenceAdapter(SettingsHomepageActivity homepageActivity,
             PreferenceGroup preferenceGroup, RecyclerView recyclerView, String key,
@@ -87,6 +88,7 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
         mSummaryColorHighlight = context.getColor(R.color.accent_select_secondary_text);
         mIconColorNormal = Utils.getHomepageIconColor(context);
         mIconColorHighlight = Utils.getHomepageIconColorHighlight(context);
+        mRevamped = Utils.revamped(context);
     }
 
     @Override
@@ -240,7 +242,7 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
 
     private void addHighlightBackground(PreferenceViewHolder holder, int position) {
         final View v = holder.itemView;
-        if (Flags.homepageRevamp()) {
+        if (mRevamped) {
             @DrawableRes int bgRes = getRoundCornerDrawableRes(position, true /*isSelected*/);
             v.setBackgroundResource(bgRes);
         } else {
@@ -256,7 +258,7 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
 
     private void removeHighlightBackground(PreferenceViewHolder holder, int position) {
         final View v = holder.itemView;
-        if (Flags.homepageRevamp()) {
+        if (mRevamped) {
             @DrawableRes int bgRes = getRoundCornerDrawableRes(position, false /*isSelected*/);
             v.setBackgroundResource(bgRes);
         } else {
