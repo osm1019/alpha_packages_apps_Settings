@@ -36,7 +36,6 @@ import androidx.window.embedding.ActivityEmbeddingController;
 import com.android.settings.R;
 import com.android.settings.Utils;
 import com.android.settings.core.RoundCornerPreferenceAdapter;
-import com.android.settings.flags.Flags;
 import com.android.settings.homepage.SettingsHomepageActivity;
 
 /**
@@ -218,7 +217,7 @@ public class HighlightableTopLevelPreferenceAdapter extends RoundCornerPreferenc
         // get the visible area of the recycler view
         Rect rvRect = new Rect();
         mRecyclerView.getGlobalVisibleRect(rvRect);
-        if (Flags.homepageRevamp() && view.getBottom() <= rvRect.height()) {
+        if (mRevamped && view.getBottom() <= rvRect.height()) {
             // the request position already fully visible in the visible area
             return;
         }
