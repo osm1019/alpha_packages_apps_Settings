@@ -17,7 +17,7 @@
         android:orientation="horizontal"
         android:background="@drawable/nad_top_menu_top_bg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nad_prefeence-height"
+        android:layout_height="@dimen/nad_preference_height"
         android:layout_marginBottom="1dp"
         android:weightSum="5">
         <FrameLayout
@@ -133,7 +133,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginEnd="1dp">
+            android:layout_marginStart="1dp">
             <androidx.preference.internal.PreferenceImageView
                 android:id="@+id/battery_icon"
                 android:background="@android:color/transparent"
