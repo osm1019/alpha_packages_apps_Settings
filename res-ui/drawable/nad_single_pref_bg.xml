@@ -20,7 +20,8 @@
     <item android:id="@android:id/mask"
         android:left="?android:attr/listPreferredItemPaddingStart"
         android:right="?android:attr/listPreferredItemPaddingEnd"
-        android:top="2dp">
+        android:top="2dp"
+        android:bottom="1dp">
         <shape>
             <solid android:color="#FFFFFFFF" />
             <corners android:radius="@dimen/nad_round_background_radius"/>
@@ -31,7 +32,7 @@
         android:right="?android:attr/listPreferredItemPaddingEnd"
         android:top="2dp">
         <shape
-            android:tint="@color/nad_color_background_tint"
+            android:tint="@color/nad_color_background_tint_a30"
             android:shape="rectangle"
             android:tintMode="src_atop">
             <gradient
@@ -39,6 +40,9 @@
                 android:endColor="@color/nad_color_gradient_end"
                 android:angle="270"/>
             <corners android:radius="@dimen/nad_round_background_radius"/>
+            <stroke
+                android:width="@dimen/nad_stroke_width"
+                android:color="#1affffff" />
         </shape>
     </item>
 </ripple>

@@ -40,6 +40,10 @@ public class NadTopMenu extends Preference {
     private long lastTouchTime = 0;
     private long currentTouchTime = 0;
 
+    private SettingsHomepageActivity mHomePageActivity;
+    private AvatarViewMixin mAvatarViewMixin;
+    private BroadcastReceiver mReceiver;
+
     public NadTopMenu(Context context, AttributeSet attrs) {
         super(context, attrs);
         setLayoutResource(context.getResources().
@@ -73,25 +77,26 @@ public class NadTopMenu extends Preference {
         holder.setDividerAllowedBelow(false);
 
         // get homepage activity
-        SettingsHomepageActivity homeActivity = ((SettingsApplication) context.getApplicationContext()).getHomeActivity();
+        mHomePageActivity = ((SettingsApplication) context.getApplicationContext()).getHomeActivity();
 
-       // avatar
-       ImageView imageView = (ImageView) holder.itemView.findViewById(
+        // avatar
+        ImageView avatarImageView = (ImageView) holder.itemView.findViewById(
                 context.getResources().getIdentifier("id/account_avatar", null, context.getPackageName()));
-        if (homeActivity != null) {
-            if (AvatarViewMixin.isAvatarSupported(homeActivity)) {
-                imageView.setVisibility(View.VISIBLE);
-                homeActivity.getLifecycle().addObserver(new AvatarViewMixin(homeActivity, imageView));
+        if (mHomePageActivity != null) {
+            if (AvatarViewMixin.isAvatarSupported(mHomePageActivity)) {
+                avatarImageView.setVisibility(View.VISIBLE);
+                mAvatarViewMixin = new AvatarViewMixin(mHomePageActivity, avatarImageView);
+                mHomePageActivity.getLifecycle().addObserver(mAvatarViewMixin);
             } else {
-                imageView.setVisibility(View.GONE);
+                avatarImageView.setVisibility(View.GONE);
             }
         }
 
         // Alpha Settings
-        LinearLayout mAlpha = holder.itemView.findViewById(context.getResources().
+        LinearLayout alphaSettingsLayout = holder.itemView.findViewById(context.getResources().
                 getIdentifier("id/alpha_settings", null, context.getPackageName()));
-        mAlpha.setClickable(true);
-        mAlpha.setOnClickListener(new View.OnClickListener() {
+        alphaSettingsLayout.setClickable(true);
+        alphaSettingsLayout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent intent = new Intent();
                 intent.setComponent(new ComponentName("com.android.settings", "com.android.settings.Settings$AlphaSettingsActivity"));
@@ -102,17 +107,17 @@ public class NadTopMenu extends Preference {
         // search
         View toolbar =  holder.itemView.findViewById(context.getResources().
                 getIdentifier("id/search_action_bar", null, context.getPackageName()));
-        if (homeActivity != null) {
+        if (mHomePageActivity != null) {
             FeatureFactory.getFeatureFactory().getSearchFeatureProvider()
-                    .initSearchToolbar(homeActivity /* activity */, toolbar,
+                    .initSearchToolbar(mHomePageActivity /* activity */, toolbar,
                             SettingsEnums.SETTINGS_HOMEPAGE);
         }
 
         // wifi
-        LinearLayout mWifi = holder.itemView.findViewById(context.getResources().
+        LinearLayout wifiLayout = holder.itemView.findViewById(context.getResources().
                 getIdentifier("id/wifi", null, context.getPackageName()));
-        mWifi.setClickable(true);
-        mWifi.setOnClickListener(new View.OnClickListener() {
+        wifiLayout.setClickable(true);
+        wifiLayout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setComponent(new ComponentName("com.android.settings", "com.android.settings.Settings$NetworkDashboardActivity"));
@@ -121,18 +126,17 @@ public class NadTopMenu extends Preference {
         });
 
         // battery
-
-        LinearLayout mBattery = holder.itemView.findViewById(context.getResources().
+        LinearLayout batteryLayout = holder.itemView.findViewById(context.getResources().
                 getIdentifier("id/battery", null, context.getPackageName()));
 
-        TextView mBatteryText = holder.itemView.findViewById(context.getResources().
+        TextView batteryTextView = holder.itemView.findViewById(context.getResources().
                 getIdentifier("id/battery_title", null, context.getPackageName()));
 
-        context.registerReceiver(new BroadcastReceiver() {
+        mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 // Get the battery scale
-                int mProgressStatus = 0;
+                int batteryLevel;
                 int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
                 int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, 0);
                 int chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
@@ -142,37 +146,62 @@ public class NadTopMenu extends Preference {
                         status == BatteryManager.BATTERY_STATUS_FULL;
 
                 // get the battery level
-                int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                int rawLevel =
+                        intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
 
-                // Calculate the battery charged percentage
-                float percentage = level / (float) scale;
-                // Update the progress bar to display current battery charged percentage
-                mProgressStatus = (int) ((percentage) * 100);
+                // scale it
+                float scaledLevel = rawLevel / (float) scale;
+
+                // convert to perentage
+                batteryLevel = (int) ((scaledLevel) * 100);
+
+                batteryTextView.setMaxLines(2);
+                batteryTextView.setGravity(Gravity.CENTER_VERTICAL);
+
+                ImageView batteryImageView = (ImageView) holder.itemView.findViewById(
+                        context.getResources().getIdentifier("id/battery_icon", null, context.getPackageName()));
 
                 // Show the battery charged percentage text
+                String batterySummary = context.getString(R.string.power_usage_summary_title) + "\n";
                 if (isCharging) {
+                    batteryImageView.setImageResource(R.drawable.ic_top_menu_battery_charging);
+                    batteryImageView.setRotation(0.0f);
                     if (usbCharge) {
-                        mBatteryText.setText("⚡ USB " + mProgressStatus + "%");
+                        batteryTextView.setText(batterySummary + "USB " + batteryLevel + "%");
                     } else if (acCharge) {
-                        mBatteryText.setText("⚡ AC " + mProgressStatus + "%");
+                        batteryTextView.setText(batterySummary + "AC " + batteryLevel + "%");
                     } else {
-                        mBatteryText.setText(context.getString(R.string.power_usage_summary_title) + " " + mProgressStatus + "%");
+                        batteryTextView.setText(batterySummary + batteryLevel + "%");
                     }
                 } else {
-                    mBatteryText.setText(context.getString(R.string.power_usage_summary_title) + " " + mProgressStatus + "%");
+                    batteryImageView.setImageResource(R.drawable.ic_top_menu_battery);
+                    batteryImageView.setRotation(90.0f);
+                    batteryTextView.setText(batterySummary + batteryLevel + "%");
 
                 }
             }
 
-        }, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        };
+        context.registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
-        mBattery.setClickable(true);
-        mBattery.setOnClickListener(new View.OnClickListener() {
+        batteryLayout.setClickable(true);
+        batteryLayout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setComponent(new ComponentName("com.android.settings", "com.android.settings.Settings$PowerUsageSummaryActivity"));
                 context.startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onDetached() {
+        super.onDetached();
+        if (mReceiver != null) {
+            getContext().unregisterReceiver(mReceiver);
+        }
+        if (mHomePageActivity != null && mAvatarViewMixin != null) {
+            mHomePageActivity.getLifecycle().removeObserver(mAvatarViewMixin);
+        }
     }
 }

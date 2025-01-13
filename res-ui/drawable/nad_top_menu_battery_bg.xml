@@ -20,10 +20,10 @@
         <shape>
             <solid android:color="#FFFFFFFF" />
             <corners
-                android:topLeftRadius="@dimen/nad_merge_background_radius"
+                android:topLeftRadius="0dp"
                 android:bottomLeftRadius="@dimen/nad_merge_background_radius"
-                android:topRightRadius="@dimen/nad_merge_background_radius"
-                android:bottomRightRadius="@dimen/nad_round_background_radius" />
+                android:topRightRadius="0dp"
+                android:bottomRightRadius="0dp" />
         </shape>
     </item>
     <item id="@android:id/background">
@@ -36,10 +36,13 @@
                 android:endColor="@color/alpha_color_secondary_accent"
                 android:angle="270"/>
             <corners
-                android:topLeftRadius="@dimen/nad_merge_background_radius"
-                android:bottomLeftRadius="@dimen/nad_merge_background_radius"
-                android:topRightRadius="@dimen/nad_merge_background_radius"
+                android:topLeftRadius="0dp"
+                android:bottomLeftRadius="0dp"
+                android:topRightRadius="0dp"
                 android:bottomRightRadius="@dimen/nad_round_background_radius" />
+            <stroke
+                android:width="@dimen/nad_stroke_width"
+                android:color="#1affffff" />
         </shape>
     </item>
 </ripple>

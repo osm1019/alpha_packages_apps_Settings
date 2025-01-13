@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -40,6 +41,11 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
     private static final int ROUND_CORNER_CENTER = 1;
     private static final int ROUND_CORNER_TOP = 1 << 1;
     private static final int ROUND_CORNER_BOTTOM = 1 << 2;
+
+    private static final int AOSP_LEGACY = 0;
+    private static final int AOSP_REVAMPED = 1;
+    private static final int DOT = 2;
+    private static final int NAD = 3;
 
     private final PreferenceGroup mPreferenceGroup;
 
@@ -110,17 +116,17 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
     protected @DrawableRes int getRoundCornerDrawableRes(int position, boolean isSelected) {
         int CornerType = mRoundCornerMappingList.get(position);
 
-        @DrawableRes int drawableRes = 0;
-        int dashboardStye = getDashboardStyle();
+        @DrawableRes int drawableRes = -1;
 
-        if (dashboardStye == 0) return drawableRes;
+        int dashboardStyle = getDashboardStyle();
 
-        if (dashboardStye == 3) { // NAD uses singles
-            // the only one preference
-            // drawableRes = isSelected
-            //     ? com.android.settings.R.drawable.nad_single_pref_selected
-            //     : com.android.settings.R.drawable.nad_single_pref;
-            // return drawableRes;
+        // should never be true
+        if (dashboardStyle == AOSP_LEGACY) {
+            return drawableRes;
+        }
+
+        // NAD uses singles
+        if (dashboardStyle == NAD) {
             return com.android.settings.R.drawable.nad_single_pref_bg;
         }
 
@@ -128,12 +134,12 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
             if (((CornerType & ROUND_CORNER_TOP) != 0) && ((CornerType & ROUND_CORNER_BOTTOM) == 0)) {
                 // the first
                 if (isSelected) {
-                     drawableRes = dashboardStye == 2
+                     drawableRes = dashboardStyle == DOT
                         ? com.android.settings.R.drawable.dot_selected_background_top // DoT
                         : R.drawable.settingslib_round_background_top_selected; // AOSP revamped
                 }
                 else {
-                    drawableRes = dashboardStye == 2
+                    drawableRes = dashboardStyle == DOT
                         ? com.android.settings.R.drawable.dot_round_background_top // DoT
                         : R.drawable.settingslib_round_background_top; // AOSP revamped
                 }
@@ -141,12 +147,12 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
                 && ((CornerType & ROUND_CORNER_TOP) == 0)) {
                 // the last
                 if (isSelected) {
-                     drawableRes = dashboardStye == 2
+                     drawableRes = dashboardStyle == DOT
                         ? com.android.settings.R.drawable.dot_selected_background_bottom // DoT
                         : R.drawable.settingslib_round_background_bottom_selected; // AOSP revamped
                 }
                 else {
-                    drawableRes = dashboardStye == 2
+                    drawableRes = dashboardStyle == DOT
                         ? com.android.settings.R.drawable.dot_round_background_bottom // DoT
                         : R.drawable.settingslib_round_background_bottom; // AOSP revamped
                 }
@@ -154,24 +160,24 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
                     && ((CornerType & ROUND_CORNER_BOTTOM) != 0)) {
                 // the only one preference
                 if (isSelected) {
-                     drawableRes = dashboardStye == 2
+                     drawableRes = dashboardStyle == DOT
                         ? com.android.settings.R.drawable.dot_selected_background // DoT
                         : R.drawable.settingslib_round_background_selected; // AOSP revamped
                 }
                 else {
-                    drawableRes = dashboardStye == 2
+                    drawableRes = dashboardStyle == DOT
                         ? com.android.settings.R.drawable.dot_round_background // DoT
                         : R.drawable.settingslib_round_background; // AOSP revamped
                 }
             } else {
                 // in the center
                 if (isSelected) {
-                     drawableRes = dashboardStye == 2
+                     drawableRes = dashboardStyle == DOT
                         ? com.android.settings.R.drawable.dot_selected_background_center // DoT
                         : R.drawable.settingslib_round_background_center_selected; // AOSP revamped
                 }
                 else {
-                    drawableRes = dashboardStye == 2
+                    drawableRes = dashboardStyle == DOT
                         ? com.android.settings.R.drawable.dot_round_background_center // DoT
                         : R.drawable.settingslib_round_background_center; // AOSP revamped
                 }
@@ -238,7 +244,6 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
     /** handle roundCorner background */
     private void updateBackground(PreferenceViewHolder holder, int position) {
         @DrawableRes int backgroundRes = getRoundCornerDrawableRes(position, false /* isSelected*/);
-
         if (backgroundRes > 0) {
             View v = holder.itemView;
             v.setBackgroundResource(backgroundRes);

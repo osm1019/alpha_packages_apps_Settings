@@ -81,6 +81,10 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
         "dashboard_tile_pref_com.google.android.gms.backup.component.BackupOrRestoreSettingsActivity"
     );
 
+    private static final List<String> PERSONALIZATION_INJECTED_KEYS = Arrays.asList(
+        "alpha_device_parts_settings"
+    );
+
     private static final List<String> SECURITY_PRIVACY_INJECTED_KEYS = Arrays.asList(
         "top_level_wellbeing",
         "top_level_google"
@@ -88,6 +92,7 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
 
     private static final ArrayMap<String, Integer> KEY_ORDER = new ArrayMap<>();
     static {
+        KEY_ORDER.put("alpha_device_parts_settings", -55);
         // We have "Passwords, passkeys & accounts with order "-10" above
         KEY_ORDER.put("top_level_wellbeing", -5);
         KEY_ORDER.put("top_level_google", 0);
@@ -608,6 +613,8 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
                         group = screen.findPreference(tile.getGroupKey());
                     } else if (ACCOUNT_INJECTED_KEYS.contains(key)) {
                         group = screen.findPreference("top_level_account_category");
+                    } else if (PERSONALIZATION_INJECTED_KEYS.contains(key)) {
+                        group = screen.findPreference("top_level_personalize_category");
                     } else if (SECURITY_PRIVACY_INJECTED_KEYS.contains(key)) {
                         group = screen.findPreference("top_level_security_privacy_category");
                     }
@@ -618,6 +625,7 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
                     if (group instanceof PreferenceCategory) {
                         ((PreferenceCategory) group).addPreference(pref);
                     } else {
+                        // Should never get here now
                         screen.addPreference(pref);
                     }
                 }

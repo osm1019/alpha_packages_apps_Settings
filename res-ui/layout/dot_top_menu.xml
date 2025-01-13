@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@android:color/transparent"
     android:gravity="center"
     android:layout_marginStart="?android:attr/listPreferredItemPaddingEnd"
     android:layout_marginEnd="?android:attr/listPreferredItemPaddingEnd"
@@ -13,7 +12,7 @@
     <LinearLayout
         android:id="@+id/about"
         android:layout_width="match_parent"
-        android:layout_height="84dp"
+        android:layout_height="@dimen/dot_preference_height"
         android:gravity="center_vertical"
         android:background="@drawable/dot_top_menu_about_background"
         android:clipToPadding="false"
@@ -79,7 +78,7 @@
     <LinearLayout
         android:id="@+id/alpha_settings"
         android:layout_width="match_parent"
-        android:layout_height="84dp"
+        android:layout_height="@dimen/dot_preference_height"
         android:gravity="center_vertical"
         android:background="@drawable/dot_top_menu_alpha_background"
         android:clipToPadding="false"

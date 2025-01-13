@@ -2,11 +2,10 @@
 <LinearLayout
     xmlns:androidprv="http://schemas.android.com/apk/prv/res/android"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/nad_rop_menu"
+    android:id="@+id/nad_top_menu_preference_layout"
     android:gravity="center"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:background="@android:color/transparent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="72dp"
@@ -17,23 +16,22 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:background="@drawable/nad_top_menu_top_bg"
-        android:padding="2dp"
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:layout_marginBottom="0dp"
+        android:layout_height="@dimen/nad_prefeence-height"
+        android:layout_marginBottom="1dp"
         android:weightSum="5">
         <FrameLayout
             android:layout_gravity="center"
-            android:background="@android:color/transparent"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1.1">
             <ImageView
                 android:layout_gravity="center"
                 android:id="@+id/account_avatar"
-                android:padding="2dp"
                 android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
                 android:contentDescription="@string/search_bar_account_avatar_content_description"/>
         </FrameLayout>
         <LinearLayout
@@ -42,9 +40,8 @@
             android:id="@+id/alpha_settings"
             android:background="@drawable/nad_top_menu_settings_bg"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:paddingVertical="4dp">
+            android:layout_height="match_parent"
+            android:layout_weight="2.8">
             <TextView
                 android:textAppearance="?android:attr/textAppearanceListItem"
                 android:textColor="?androidprv:attr/materialColorOnSurface"
@@ -70,7 +67,7 @@
             android:background="@drawable/nad_top_menu_search_bg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.9">
+            android:layout_weight="1.1">
             <Toolbar
                 android:id="@+id/search_action_bar"
                 android:background="@android:color/transparent"
@@ -79,103 +76,89 @@
                 android:nextFocusForward="@+id/wifi"
                 android:paddingEnd="@dimen/search_bar_padding_end"
                 android:touchscreenBlocksFocus="false"
-                android:navigationIcon="@drawable/ic_settings_search"
+                android:navigationIcon="@drawable/settings_search"
                 android:contentInsetStartWithNavigation="@dimen/search_bar_content_inset"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:gravity="center"
         android:orientation="horizontal"
-        android:background="@android:color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp">
+        android:layout_height="56dp"
+        android:layout_marginTop="1dp"
+        android:padding="0dp">
         <LinearLayout
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:id="@+id/wifi"
             android:background="@drawable/nad_top_menu_wifi_bg"
-            android:padding="10dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <RelativeLayout
-                android:background="@android:color/transparent"
-                android:padding="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <androidx.preference.internal.PreferenceImageView
-                    android:layout_gravity="center_vertical"
-                    android:id="@+id/wifi_icon"
-                    android:background="@android:color/transparent"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_top_menu_wifi"
-                    android:scaleType="centerInside"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="4dp"
-                    android:paddingHorizontal="4dp"
-                    android:paddingVertical="2dp"/>
-                <TextView
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?androidprv:attr/materialColorOnSecondaryFixed"
-                    android:ellipsize="marquee"
-                    android:id="@+id/wifi_title"
-                    android:padding="2dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/network_dashboard_title"
-                    android:singleLine="true"
-                    android:layout_toRightOf="@+id/wifi_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="4dp"
-                    style="@style/PreferenceSummaryTextStyle"/>
-            </RelativeLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:id="@+id/battery"
-            android:background="@drawable/nad_top_menu_battery_bg"
-            android:padding="10dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginStart="2dp">
-            <RelativeLayout
+            android:layout_marginEnd="1dp">
+            <androidx.preference.internal.PreferenceImageView
+                android:id="@+id/wifi_icon"
                 android:background="@android:color/transparent"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_top_menu_wifi"
+                android:scaleType="centerInside"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="2dp"/>
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?androidprv:attr/materialColorOnSecondaryFixed"
+                android:id="@+id/wifi_title"
                 android:padding="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <androidx.preference.internal.PreferenceImageView
-                    android:layout_gravity="center_vertical"
-                    android:id="@+id/battery_icon"
-                    android:background="@android:color/transparent"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_top_menu_battery"
-                    android:scaleType="centerInside"
-                    android:rotation="90"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="4dp"
-                    android:paddingHorizontal="4dp"
-                    android:paddingVertical="2dp"/>
-                <TextView
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?androidprv:attr/materialColorOnSecondaryFixed"
-                    android:ellipsize="marquee"
-                    android:id="@+id/battery_title"
-                    android:padding="2dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="2dp"
-                    android:text="@string/network_dashboard_title"
-                    android:singleLine="true"
-                    android:layout_toRightOf="@+id/battery_icon"
-                    android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="4dp"
-                    style="@style/PreferenceSummaryTextStyle"/>
-            </RelativeLayout>
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/network_dashboard_title"
+                android:maxLines="2"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                style="@style/PreferenceSummaryTextStyle"/>
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:id="@+id/battery"
+            android:background="@drawable/nad_top_menu_battery_bg"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="1dp">
+            <androidx.preference.internal.PreferenceImageView
+                android:id="@+id/battery_icon"
+                android:background="@android:color/transparent"
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_top_menu_battery"
+                android:scaleType="centerInside"
+                android:rotation="90"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="4dp"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="2dp"/>
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?androidprv:attr/materialColorOnSecondaryFixed"
+                android:id="@+id/battery_title"
+                android:padding="2dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/network_dashboard_title"
+                android:maxLines="2"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                style="@style/PreferenceSummaryTextStyle"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

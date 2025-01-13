@@ -16,22 +16,26 @@
   -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/alpha_color_ripple">
-    <item android:id="@android:id/mask">
+    <item android:id="@android:id/mask"
+        android:top="3dp"
+        android:bottom="3dp">
         <shape>
             <solid android:color="#FFFFFFFF" />
-            <corners android:radius="2dp"/>
+            <corners android:radius="12dp"/>
         </shape>
     </item>
-    <item>
+    <item
+        android:top="2dp"
+        android:bottom="2dp">
         <shape
-            android:tint="@color/nad_color_background_tint"
+            android:tint="@color/nad_color_background_tint_a30"
             android:shape="rectangle"
             android:tintMode="src_atop">
             <gradient
                 android:startColor="@color/nad_color_gradient_start"
                 android:endColor="@color/nad_color_gradient_end"
                 android:angle="270"/>
-            <corners android:radius="2dp" />
+            <corners android:radius="12dp" />
         </shape>
     </item>
 </ripple>

@@ -39,5 +39,5 @@
     <color name="nad_preference_accent_color_secondary">@android:color/system_accent1_200</color>
     <color name="nad_color_gradient_end">@android:color/system_neutral2_600</color>
     <color name="nad_color_gradient_start">@android:color/system_neutral2_700</color>
-    <color name="nad_color_background_tint">#4d030303</color>
+    <color name="nad_color_background_tint">@android:color/system_neutral2_800</color>
 </resources>
