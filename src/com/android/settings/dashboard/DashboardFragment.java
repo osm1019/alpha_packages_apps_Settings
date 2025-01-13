@@ -595,18 +595,18 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
                 observers = mDashboardFeatureProvider.bindPreferenceToTileAndGetObservers(
                         getActivity(), this, forceRoundedIcons, pref, tile, key,
                         mPlaceholderPreferenceController.getOrder());
-                if (Flags.dynamicInjectionCategory()) {
-                    if (tile.hasGroupKey()) {
-                        Preference group = screen.findPreference(tile.getGroupKey());
-                        if (group instanceof PreferenceCategory) {
-                            ((PreferenceCategory) group).addPreference(pref);
-                        } else {
-                            screen.addPreference(pref);
-                        }
-                    } else {
-                        screen.addPreference(pref);
-                    }
-                } else {
+                // if (Flags.dynamicInjectionCategory()) {
+                //     if (tile.hasGroupKey()) {
+                //         Preference group = screen.findPreference(tile.getGroupKey());
+                //         if (group instanceof PreferenceCategory) {
+                //             ((PreferenceCategory) group).addPreference(pref);
+                //         } else {
+                //             screen.addPreference(pref);
+                //         }
+                //     } else {
+                //         screen.addPreference(pref);
+                //     }
+                // } else {
                     Preference group = null;
                     if (tile.hasGroupKey()
                             && mDashboardTilePrefKeys.containsKey(tile.getGroupKey())) {
@@ -617,7 +617,9 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
                         group = screen.findPreference("top_level_personalize_category");
                     } else if (SECURITY_PRIVACY_INJECTED_KEYS.contains(key)) {
                         group = screen.findPreference("top_level_security_privacy_category");
-                    }
+                    } /* else {
+                        group = screen.findPreference("top_level_category_undefined");
+                    } */
                     // Order the prefs within their respective category
                     if (KEY_ORDER.containsKey(key)) {
                         pref.setOrder(KEY_ORDER.get(key));
@@ -628,7 +630,7 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
                         // Should never get here now
                         screen.addPreference(pref);
                     }
-                }
+                //}
                 registerDynamicDataObservers(observers);
                 mDashboardTilePrefKeys.put(key, observers);
             }
@@ -642,14 +644,14 @@ public abstract class DashboardFragment extends SettingsPreferenceFragment
         for (Map.Entry<String, List<DynamicDataObserver>> entry : remove.entrySet()) {
             final String key = entry.getKey();
             mDashboardTilePrefKeys.remove(key);
-            if (Flags.dynamicInjectionCategory()) {
-                screen.removePreferenceRecursively(key);
-            } else {
+            // if (Flags.dynamicInjectionCategory()) {
+            //     screen.removePreferenceRecursively(key);
+            // } else {
                 Preference preference = screen.findPreference(key);
                 if (preference != null) {
                     screen.removePreference(preference);
                 }
-            }
+            // }
             unregisterDynamicDataObservers(entry.getValue());
         }
 
