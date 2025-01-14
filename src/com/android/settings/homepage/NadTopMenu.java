@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BlendMode;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.text.TextUtils;
@@ -78,6 +79,14 @@ public class NadTopMenu extends Preference {
 
         // get homepage activity
         mHomePageActivity = ((SettingsApplication) context.getApplicationContext()).getHomeActivity();
+
+        // get the main layout
+                // Alpha Settings
+        LinearLayout nadTopMenuLayout = holder.itemView.findViewById(context.getResources().
+                getIdentifier("id/nad_top_menu_preference_layout", null, context.getPackageName()));
+        if (nadTopMenuLayout != null) {
+            nadTopMenuLayout.setBackgroundResource(R.drawable.nad_top_menu_overlay);
+        }
 
         // avatar
         ImageView avatarImageView = (ImageView) holder.itemView.findViewById(

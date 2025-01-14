@@ -17,11 +17,7 @@
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/alpha_color_ripple">
-    <item android:id="@android:id/mask"
-        android:left="?android:attr/listPreferredItemPaddingStart"
-        android:right="?android:attr/listPreferredItemPaddingEnd"
-        android:top="2dp"
-        android:bottom="1dp">
+    <item android:id="@android:id/mask">
         <shape>
             <solid android:color="#FFFFFFFF" />
             <corners android:radius="@dimen/nad_round_background_radius"/>
@@ -29,8 +25,7 @@
     </item>
     <item id="@android:id/background"
         android:left="?android:attr/listPreferredItemPaddingStart"
-        android:right="?android:attr/listPreferredItemPaddingEnd"
-        android:top="2dp">
+        android:right="?android:attr/listPreferredItemPaddingEnd">
         <shape
             android:tint="@color/nad_color_background_tint_a30"
             android:shape="rectangle"

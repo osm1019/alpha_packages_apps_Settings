@@ -27,7 +27,7 @@
 
         <com.android.settings.homepage.NadTopMenu
             android:key="nad_top_menu_key"
-            android:order="-160"/>
+            android:order="-10"/>
 
     </PreferenceCategory>
 

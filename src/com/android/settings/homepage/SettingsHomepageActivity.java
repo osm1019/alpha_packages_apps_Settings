@@ -92,6 +92,8 @@ public class SettingsHomepageActivity extends FragmentActivity implements
 
     private static final String TAG = "SettingsHomepageActivity";
 
+    private static final int NAD_DASHBOARD_STYLE = 3;
+
     // Additional extra of Settings#ACTION_SETTINGS_LARGE_SCREEN_DEEP_LINK.
     // Put true value to the intent when startActivity for a deep link intent from this Activity.
     public static final String EXTRA_IS_FROM_SETTINGS_HOMEPAGE = "is_from_settings_homepage";
@@ -248,7 +250,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         }
 
         setupEdgeToEdge();
-        if (getDashboardStyle() == 3) {
+        if (getDashboardStyle() == NAD_DASHBOARD_STYLE) {
             setContentView(R.layout.settings_nad_homepage_container_v2);
         }
         else {
@@ -407,7 +409,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
     }
 
     private void initSearchBarView() {
-        if (getDashboardStyle() == 3) return;
+        if (getDashboardStyle() == NAD_DASHBOARD_STYLE) return;
         if (revamped()) {
             View toolbar = findViewById(R.id.search_action_bar);
             FeatureFactory.getFeatureFactory().getSearchFeatureProvider()
@@ -473,7 +475,7 @@ public class SettingsHomepageActivity extends FragmentActivity implements
         // Update content background.
         findViewById(android.R.id.content).setBackgroundColor(color);
         int style = getDashboardStyle();
-        if ((style == 1 || style == 2) && revamped()) {
+        if (revamped() && style != NAD_DASHBOARD_STYLE) {
             //Update search bar background
             findViewById(R.id.app_bar_container).setBackgroundColor(color);
         }

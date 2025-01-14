@@ -67,6 +67,12 @@ public class TopLevelSettings extends DashboardFragment implements SplitLayoutLi
     private static final String TAG = "TopLevelSettings";
     private static final String SAVED_HIGHLIGHT_MIXIN = "highlight_mixin";
     private static final String PREF_KEY_SUPPORT = "top_level_support";
+
+    private static final int AOSP_LEGACY = 0;
+    private static final int AOSP_REVAMPED = 1;
+    private static final int DOT = 2;
+    private static final int NAD = 3;
+
     private boolean mIsEmbeddingActivityEnabled;
     private TopLevelHighlightMixin mHighlightMixin;
     private int mPaddingHorizontal;
@@ -96,13 +102,13 @@ public class TopLevelSettings extends DashboardFragment implements SplitLayoutLi
     protected int getPreferenceScreenResId() {
         int dashboardStyle = getDashboardStyle();
         switch (dashboardStyle) {
-            case 0: /* AOSP */
+            case AOSP_LEGACY:
                 sResId = R.xml.top_level_settings;
                 break;
-            case 2: /* DoT */
+            case DOT:
                 sResId =R.xml.top_level_settings_dot;
                 break;
-            case 3: /* NAD */
+            case NAD:
                 sResId = R.xml.top_level_settings_nad;
                 break;
             default:
@@ -252,7 +258,8 @@ public class TopLevelSettings extends DashboardFragment implements SplitLayoutLi
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
-        if (getDashboardStyle() == 0) { // AOSP legacy
+        int dashboardStyle = getDashboardStyle();
+        if (dashboardStyle == AOSP_LEGACY) {
             int tintColor = Utils.getHomepageIconColor(getContext());
             iteratePreferences(preference -> {
                 Drawable icon = preference.getIcon();
@@ -260,6 +267,22 @@ public class TopLevelSettings extends DashboardFragment implements SplitLayoutLi
                     icon.setTint(tintColor);
                 }
             });
+        } else if (dashboardStyle == NAD) {
+            setPreferencesBackground();
+        }
+    }
+
+    private void setPreferencesBackground() {
+        final PreferenceScreen screen = getPreferenceScreen();
+        final int count = screen.getPreferenceCount();
+        for (int i = 0; i < count; i++) {
+            final Preference preference = screen.getPreference(i);
+
+            String key = preference.getKey();
+
+            if (key == null || "nad_top_menu_key".equals(key)) continue;
+
+            preference.setLayoutResource(R.layout.nad_homepage_preference);
         }
     }
 
@@ -389,7 +412,7 @@ public class TopLevelSettings extends DashboardFragment implements SplitLayoutLi
             return mHighlightMixin.onCreateAdapter(this, preferenceScreen, mScrollNeeded);
         }
 
-        if (revamped()) {
+        if (revamped() && getDashboardStyle() != NAD) {
             return new RoundCornerPreferenceAdapter(preferenceScreen);
         }
         return super.onCreateAdapter(preferenceScreen);

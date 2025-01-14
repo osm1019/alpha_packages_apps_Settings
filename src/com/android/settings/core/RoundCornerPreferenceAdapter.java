@@ -125,7 +125,7 @@ public class RoundCornerPreferenceAdapter extends PreferenceGroupAdapter {
             return drawableRes;
         }
 
-        // NAD uses singles
+        // should never be true
         if (dashboardStyle == NAD) {
             return com.android.settings.R.drawable.nad_single_pref_bg;
         }

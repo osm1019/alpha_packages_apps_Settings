@@ -2,11 +2,7 @@
 
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/alpha_color_ripple">
-    <item android:id="@android:id/mask"
-        android:left="1dp"
-        android:right="1dp"
-        android:top="1dp"
-        android:bottom="1dp">
+    <item android:id="@android:id/mask">
         <shape>
             <solid android:color="#FFFFFFFF" />
             <corners android:radius="32dp" />
@@ -14,12 +10,9 @@
     </item>
     <item id="@android:id/background">
         <shape
-            android:tint="@color/color_accent_a30"
+            android:tint="@color/alpha_color_secondary_accent_a30"
             android:tintMode="src_atop">
-            <gradient
-                android:angle="270.0"
-                android:startColor="@color/alpha_color_primary_accent"
-                android:endColor="@color/nad_preference_accent_color_primary" />
+            <solid color="@color/alpha_color_secondary_accent_dark" />
             <corners android:radius="32dp" />
             <stroke
                 android:width="2dp"
@@ -27,12 +20,12 @@
         </shape>
     </item>
     <item
-        android:width="22dp"
-        android:height="22dp"
+        android:width="32dp"
+        android:height="40dp"
         android:drawable="@drawable/ic_settings_search"
         android:gravity="center"
-        android:left="12dp"
-        android:bottom="12dp"
-        android:right="12dp"
-        android:top="12dp" />
+        android:left="2dp"
+        android:bottom="2dp"
+        android:right="2dp"
+        android:top="2dp" />
 </ripple>
